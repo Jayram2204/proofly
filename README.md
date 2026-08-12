@@ -1,68 +1,83 @@
-# Proofly — Verifiable Credentials Demo
+# Proofly — Verifiable Credentials
 
-Proofly is a **client-side React demo** that allows colleges to mint verifiable certificates, and students to securely view them. Certificates can be verified instantly via a hash or QR code. This demo is fully **client-side** but structured to be **blockchain-ready** for future integration with Aptos or other smart contract platforms.
+Mint, share, and verify verifiable credentials entirely in the browser. Colleges issue certificates to students; anyone can verify a certificate by its **SHA-256 hash** or by scanning its **QR code**.
 
-## Table of Contents
+Fully **client-side** (no server, no database) and structured so a future Move/Aptos smart contract could anchor hashes on-chain for tamper-proof, cross-browser verification.
 
-- [Features](#features)
-- [Demo](#demo)
-- [Technologies](#technologies)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Project Structure](#project-structure)
-- [Future Improvements](#future-improvements)
-- [License](#license)
+![demo](https://img.shields.io/badge/stack-React%20%2B%20TypeScript%20%2B%20Vite-3b5bff) ![license](https://img.shields.io/github/license/Jayram2204/proofly)
 
 ## Features
 
-### College View
-- Mint certificates with student info, course, title, details, and issue date.
-- Generate SHA256 hash for verification.
-- Search and filter certificates by student name, ID, course, title, or hash.
-- Print or export certificates as PDF with QR codes.
+### College view
+- Mint certificates with student ID, name, course, title, details, and issue date.
+- Every certificate gets a unique **SHA-256 hash** at mint time.
+- Search and filter issued certificates by **name, ID, course, title, or hash**.
+- Print or export any certificate as a PDF (with QR code) via the print dialog.
 
-### Student View
-- Securely access certificates using Student ID.
-- View all issued certificates.
-- Copy shareable links or open verification page directly.
+### Student view
+- Look up certificates with a **Student ID**.
+- See all certificates issued to that student.
+- Copy a shareable verification link for each certificate.
+
 ### Verification
-- Certificates can be verified via a URL query parameter (`?verify=<hash>`).
-- QR code generated for each certificate for easy verification.
+- Verify any certificate via a URL query parameter: `?verify=<hash>`.
+- Every certificate carries a **QR code** that points to its verification page.
 
-### UI & Animations
-- TailwindCSS for a polished UI.
-- Framer Motion for smooth animations.
+### Tech & UI
+- React + TypeScript + Vite.
+- Framer Motion for smooth entrance animations.
+- Lucide icons and QRCode.react for QR generation.
+- LocalStorage for client-side persistence.
 
 ## Demo
 
-Landing page with role selection:
-
-- **College:** Mint certificates.
-- **Student:** View your certificates.
-
-Certificates include:
-
-- Hash and QR code.
-- Print/PDF option.
-- Copyable share link.
-- Verified badge.
-
-## Technologies
-
-- **React** (CRA or Vite)
-- **Lucide-React** (icons)
-- **QRCode.react** (QR code generation)
-- **Framer Motion** (animations)
-- **TailwindCSS** (optional styling)
-- **LocalStorage** (client-side data persistence)
-
----
+1. **Landing** — choose your role (College or Student).
+2. **College** — fill the mint form, then search/filter the issued list, copy share links, or print a PDF.
+3. **Student** — enter your student ID to see your certificates and share/verify them.
+4. **Verify** — open any share link (or scan any QR code) to confirm the certificate's integrity.
 
 ## Installation
 
-1. Clone the repository:
-git clone https://github.com/your-username/proofly.git
+```bash
+git clone https://github.com/Jayram2204/proofly.git
 cd proofly
 npm install
-npm start
-Open http://localhost:3000 to see the demo.
+npm run dev
+```
+
+Open `http://localhost:5173` to use the app.
+
+## Build
+
+```bash
+npm run build   # type-checks and builds to dist/
+npm run preview # serve the production build locally
+```
+
+## Project structure
+
+```
+src/
+  components/        # UI views: Landing, College, Student, Verify, cards, forms
+  context/           # certificates state + persistence
+  lib/               # hashing, search, links, formatting
+  types.ts           # shared data types
+```
+
+## How hashing works
+
+The SHA-256 digest is computed over a canonical form of the certificate data
+(student ID, name, course, title, details, issue date), so the same certificate
+always produces the same hash. Verification compares the hash in the URL/QR
+against the certificate store.
+
+## Roadmap
+
+- Anchor certificate hashes on an Aptos smart contract so verification works in
+  any browser without sharing local storage.
+- Revocation support.
+- Bulk minting from CSV.
+
+## License
+
+[MIT](./LICENSE)
