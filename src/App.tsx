@@ -8,10 +8,12 @@ import { CollegeView } from './components/CollegeView';
 import { StudentView } from './components/StudentView';
 import { VerifyPage } from './components/VerifyPage';
 import { PrintCertificate } from './components/PrintCertificate';
+import { CustomCursor } from './components/CustomCursor';
 
 export default function App() {
   return (
     <CertificatesProvider>
+      <CustomCursor />
       <AppContent />
     </CertificatesProvider>
   );

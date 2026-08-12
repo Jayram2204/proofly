@@ -25,13 +25,15 @@ Fully **client-side** (no server, no database) and structured so a future Move/A
 
 ### Tech & UI
 - React + TypeScript + Vite.
-- Framer Motion for smooth entrance animations.
+- Three.js WebGL scene behind the landing (particles + floating credential cubes).
+- Framer Motion for smooth entrance and scroll animations.
+- Custom cursor, glitch text, and a dark cinematic theme.
 - Lucide icons and QRCode.react for QR generation.
 - LocalStorage for client-side persistence.
 
 ## Demo
 
-1. **Landing** — choose your role (College or Student).
+1. **Landing** — choose your role (College or Student) over an animated Three.js scene.
 2. **College** — fill the mint form, then search/filter the issued list, copy share links, or print a PDF.
 3. **Student** — enter your student ID to see your certificates and share/verify them.
 4. **Verify** — open any share link (or scan any QR code) to confirm the certificate's integrity.
@@ -58,11 +60,13 @@ npm run preview # serve the production build locally
 
 ```
 src/
-  components/        # UI views: Landing, College, Student, Verify, cards, forms
+  components/        # UI views: Landing, College, Student, Verify, Three.js scene
   context/           # certificates state + persistence
   lib/               # hashing, search, links, formatting
   types.ts           # shared data types
 ```
+
+The Three.js scene is lazy-loaded and only renders on the landing view.
 
 ## How hashing works
 
