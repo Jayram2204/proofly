@@ -1,0 +1,16 @@
+[package]
+name = "Proofly"
+version = "1.0.0"
+authors = []
+description = "On-chain anchoring of verifiable credential hashes"
+license = "MIT"
+
+[addresses]
+proofly = "PROOFLY_ADDRESS"
+
+[dependencies]
+AptosFramework = { git = "https://github.com/aptos-labs/aptos-core.git", subdir = "aptos-move/framework/aptos-framework", rev = "main" }
+
+[dev-addresses]
+
+[dev-dependencies]

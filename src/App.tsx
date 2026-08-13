@@ -23,6 +23,7 @@ function AppContent() {
   const { certificates } = useCertificates();
   const [view, setView] = useState<AppView>('landing');
   const [verifyHash, setVerifyHash] = useState<string | null>(null);
+  const [verifyIssuer, setVerifyIssuer] = useState<string | null>(null);
   const [printCert, setPrintCert] = useState<Certificate | null>(null);
 
   useEffect(() => {
@@ -30,6 +31,7 @@ function AppContent() {
     const verify = params.get('verify');
     if (verify) {
       setVerifyHash(verify);
+      setVerifyIssuer(params.get('issuer'));
       setView('landing');
     }
   }, []);
@@ -45,8 +47,10 @@ function AppContent() {
   function goHome() {
     setView('landing');
     setVerifyHash(null);
+    setVerifyIssuer(null);
     const url = new URL(window.location.href);
     url.searchParams.delete('verify');
+    url.searchParams.delete('issuer');
     window.history.replaceState({}, '', url);
   }
 
@@ -54,7 +58,7 @@ function AppContent() {
     return (
       <>
         <Layout onHome={goHome}>
-          <VerifyPage hash={verifyHash} />
+          <VerifyPage hash={verifyHash} issuer={verifyIssuer} />
         </Layout>
         {printCert && <PrintCertificate cert={printCert} />}
       </>

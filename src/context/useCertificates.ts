@@ -5,6 +5,7 @@ import type { Certificate } from '../types';
 export interface CertificatesContextValue {
   certificates: Certificate[];
   addCertificate: (cert: Certificate) => void;
+  updateCertificate: (id: string, patch: Partial<Certificate>) => void;
   findById: (id: string) => Certificate | undefined;
   findByHash: (hash: string) => Certificate | undefined;
   findByStudentId: (studentId: string) => Certificate[];

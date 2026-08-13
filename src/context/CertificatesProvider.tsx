@@ -25,6 +25,15 @@ export function CertificatesProvider({ children }: { children: ReactNode }) {
     setCertificates((prev) => [cert, ...prev]);
   }, []);
 
+  const updateCertificate = useCallback(
+    (id: string, patch: Partial<Certificate>) => {
+      setCertificates((prev) =>
+        prev.map((cert) => (cert.id === id ? { ...cert, ...patch } : cert)),
+      );
+    },
+    [],
+  );
+
   const findById = useCallback(
     (id: string) => certificates.find((cert) => cert.id === id),
     [certificates],
@@ -53,11 +62,19 @@ export function CertificatesProvider({ children }: { children: ReactNode }) {
     () => ({
       certificates,
       addCertificate,
+      updateCertificate,
       findById,
       findByHash,
       findByStudentId,
     }),
-    [certificates, addCertificate, findById, findByHash, findByStudentId],
+    [
+      certificates,
+      addCertificate,
+      updateCertificate,
+      findById,
+      findByHash,
+      findByStudentId,
+    ],
   );
 
   return (

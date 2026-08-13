@@ -1,5 +1,11 @@
 import { useState } from 'react';
-import { Check, Copy, Printer } from 'lucide-react';
+import {
+  Anchor,
+  Check,
+  Copy,
+  Loader2,
+  Printer,
+} from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import type { Certificate } from '../types';
 import { certificateVerifyUrl, formatDate } from '../lib/links';
@@ -7,9 +13,16 @@ import { certificateVerifyUrl, formatDate } from '../lib/links';
 interface CertificateCardProps {
   cert: Certificate;
   onPrint: (cert: Certificate) => void;
+  onAnchor?: (cert: Certificate) => void;
+  anchoring?: boolean;
 }
 
-export function CertificateCard({ cert, onPrint }: CertificateCardProps) {
+export function CertificateCard({
+  cert,
+  onPrint,
+  onAnchor,
+  anchoring = false,
+}: CertificateCardProps) {
   const [copied, setCopied] = useState(false);
   const url = certificateVerifyUrl(cert);
 
@@ -67,6 +80,29 @@ export function CertificateCard({ cert, onPrint }: CertificateCardProps) {
           <QRCodeSVG value={url} size={88} level="M" marginSize={1} />
         </div>
         <div className="action-buttons">
+          {cert.anchored ? (
+            <span
+              className="status-badge anchored"
+              title={`Anchored on Aptos by ${cert.issuer}`}
+            >
+              <Anchor size={12} /> on-chain
+            </span>
+          ) : (
+            onAnchor && (
+              <button
+                className="btn btn-ghost"
+                onClick={() => onAnchor(cert)}
+                disabled={anchoring}
+              >
+                {anchoring ? (
+                  <Loader2 size={15} className="spin" />
+                ) : (
+                  <Anchor size={15} />
+                )}
+                Anchor on-chain
+              </button>
+            )
+          )}
           <button className="btn btn-ghost" onClick={copyLink}>
             {copied ? <Check size={15} /> : <Copy size={15} />}
             {copied ? 'Copied' : 'Share link'}

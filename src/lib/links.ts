@@ -6,7 +6,12 @@ export function verifyUrl(hash: string): string {
 }
 
 export function certificateVerifyUrl(cert: Certificate): string {
-  return verifyUrl(cert.hash);
+  const url = new URL(window.location.href);
+  url.searchParams.set('verify', cert.hash);
+  if (cert.issuer) {
+    url.searchParams.set('issuer', cert.issuer);
+  }
+  return url.toString();
 }
 
 export function formatDate(iso: string): string {
