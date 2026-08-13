@@ -25,17 +25,17 @@ module proofly::credentials {
         }
 
         let store = borrow_global_mut<Store>(addr);
-        assert!(!table::contains(&store.hashes, &hash), E_HASH_ALREADY_ANCHORED);
+        assert!(!table::contains(&store.hashes, hash), E_HASH_ALREADY_ANCHORED);
         table::add(&mut store.hashes, hash, addr);
     }
 
-    /// Returns true when `hash` has been anchored by `owner`.
     #[view]
+    /// Returns true when `hash` has been anchored by `owner`.
     public fun has_hash(owner: address, hash: String): bool acquires Store {
         if (!exists<Store>(owner)) {
             return false;
         }
         let store = borrow_global<Store>(owner);
-        table::contains(&store.hashes, &hash)
+        table::contains(&store.hashes, hash)
     }
 }
