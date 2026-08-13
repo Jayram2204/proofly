@@ -25,3 +25,6 @@ dist-ssr
 
 # Aptos build artifacts
 move/build/
+
+# Aptos local credentials
+move/.aptos/
